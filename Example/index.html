@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tailwind Color Palette Tester // Turbo Reader</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Lexend:wght@400;700;900&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Lexend', sans-serif;
+            transition: background-color 0.3s ease;
+        }
+
+        .neo-brutal {
+            border: 4px solid black;
+            box-shadow: 8px 8px 0px black;
+            transition: all 0.1s;
+        }
+
+        .neo-btn:active {
+            box-shadow: 0px 0px 0px black;
+            transform: translate(4px, 4px);
+        }
+
+        .color-swatch {
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+        }
+
+        .color-swatch:hover {
+            transform: scale(1.1);
+            border-color: black;
+        }
+    </style>
+</head>
+
+<body class="bg-[#f0f0f0] p-8 text-black min-h-screen">
+
+    <div class="max-w-6xl mx-auto space-y-12">
+        <header class="flex flex-col md:flex-row justify-between items-end border-b-8 border-black pb-4">
+            <div>
+                <h1 class="text-6xl font-black uppercase tracking-tighter">Color Lab</h1>
+                <p class="font-bold opacity-60 uppercase tracking-widest text-sm">Turbo Reader UI Explorer</p>
+            </div>
+            <div class="flex gap-4 mt-4 md:mt-0">
+                <button onclick="resetColors()"
+                    class="neo-brutal neo-btn bg-white px-4 py-2 font-black uppercase">Reset</button>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <!-- PREVIEW SECTION -->
+            <section class="space-y-8 sticky top-8 h-fit">
+                <h2 class="text-2xl font-black uppercase underline decoration-4 decoration-yellow-400">UI Preview</h2>
+
+                <div id="preview-card" class="neo-brutal p-8 bg-white space-y-6">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full border-4 border-black bg-primary" id="primary-circ"></div>
+                        <h3 class="text-3xl font-black uppercase tracking-tight" id="preview-title">Dashboard Hero</h3>
+                    </div>
+
+                    <p class="text-lg opacity-80 leading-relaxed italic">
+                        "The quick brown fox jumps over the lazy dog." - Testing how fonts and colors interact in this
+                        space.
+                    </p>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <button id="preview-btn-1"
+                            class="neo-brutal neo-btn bg-primary py-4 font-black uppercase text-xl">Action One</button>
+                        <button id="preview-btn-2"
+                            class="neo-brutal neo-btn bg-black text-white py-4 font-black uppercase text-xl border-black">Action
+                            Two</button>
+                    </div>
+
+                    <div class="space-y-2">
+                        <div class="flex justify-between font-black uppercase text-xs">
+                            <span>Progress</span>
+                            <span id="progress-val">65%</span>
+                        </div>
+                        <div class="h-8 border-4 border-black bg-gray-100 overflow-hidden">
+                            <div id="preview-progress" class="h-full bg-primary w-[65%] shadow-inner"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-black text-white p-4 font-mono text-xs overflow-x-auto">
+                    <p id="css-out">/* Selected Palette Variables */<br>--bg-color: #f0f0f0;<br>--primary-color:
+                        #FACC15;</p>
+                </div>
+            </section>
+
+            <!-- CONTROLS SECTION -->
+            <section class="space-y-8">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-2xl font-black uppercase underline decoration-4 decoration-yellow-400">Color Palette
+                    </h2>
+                    <div class="flex gap-2">
+                        <button onclick="setMode('bg')" id="mode-bg"
+                            class="px-3 py-1 bg-black text-white font-bold text-xs uppercase rounded">Edit BG</button>
+                        <button onclick="setMode('primary')" id="mode-primary"
+                            class="px-3 py-1 bg-gray-200 font-bold text-xs uppercase rounded">Edit Primary</button>
+                    </div>
+                </div>
+
+                <div id="palette-grid" class="space-y-4">
+                    <!-- Colors will be injected here -->
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        const colors = {
+            Slate: ["f8fafc", "f1f5f9", "e2e8f0", "cbd5e1", "94a3b8", "64748b", "475569", "334155", "1e293b", "0f172a", "020617"],
+            Gray: ["f9fafb", "f3f4f6", "e5e7eb", "d1d5db", "9ca3af", "6b7280", "4b5563", "374151", "1f2937", "111827", "030712"],
+            Zinc: ["fafafa", "f4f4f5", "e4e4e7", "d4d4d8", "a1a1aa", "71717a", "52525b", "3f3f46", "27272a", "18181b", "09090b"],
+            Neutral: ["fafafa", "f5f5f5", "e5e5e5", "d4d4d4", "a3a3a3", "737373", "525252", "404040", "262626", "171717", "0a0a0a"],
+            Stone: ["fafaf9", "f5f5f4", "e7e5e4", "d6d3d1", "a8a29e", "78716c", "57534e", "44403c", "292524", "1c1917", "0c0a09"],
+            Red: ["fef2f2", "fee2e2", "fecaca", "fca5a5", "f87171", "ef4444", "dc2626", "b91c1c", "991b1b", "7f1d1d", "450a0a"],
+            Orange: ["fff7ed", "ffedd5", "fed7aa", "fdb274", "fb923c", "f97316", "ea580c", "c2410c", "9a3412", "7c2d12", "431407"],
+            Amber: ["fffbeb", "fef3c7", "fde68a", "fcd34d", "fbbf24", "f59e0b", "d97706", "b45309", "92400e", "78350f", "451a03"],
+            Yellow: ["fefce8", "fef9c3", "fef08a", "fde047", "facc15", "eab308", "ca8a04", "a16207", "854d0e", "713f12", "422006"],
+            Lime: ["f7fee7", "ecfccb", "d9f99d", "bef264", "a3e635", "84cc16", "65a30d", "4d7c0f", "3f6212", "365314", "1a2e05"],
+            Green: ["f0fdf4", "dcfce7", "bbf7d0", "86efac", "4ade80", "22c55e", "16a34a", "15803d", "166534", "14532d", "052e16"],
+            Emerald: ["ecfdf5", "d1fae5", "a7f3d0", "6ee7b7", "34d399", "10b981", "059669", "047857", "065f46", "064e3b", "022c22"],
+            Teal: ["f0fdfa", "ccfbf1", "99f6e4", "5eead4", "2dd4bf", "14b8a6", "0d9488", "0991b1", "115e59", "134e4a", "042f2e"],
+            Cyan: ["ecfeff", "cffafe", "a5f3fc", "67e8f9", "22d3ee", "06b6d4", "0891b2", "0e7490", "155e75", "164e63", "083344"],
+            Sky: ["f0f9ff", "e0f2fe", "bae6fd", "7dd3fc", "38bdf8", "0ea5e9", "0284c7", "0369a1", "075985", "0c4a6e", "082f49"],
+            Blue: ["eff6ff", "dbeafe", "bfdbfe", "93c5fd", "60a5fa", "3b82f6", "2563eb", "1d4ed8", "1e40af", "1e3a8a", "172554"],
+            Indigo: ["eef2ff", "e0e7ff", "c7d2fe", "a5b4fc", "818cf8", "6366f1", "4f46e5", "4338ca", "3730a3", "312e81", "1e1b4b"],
+            Violet: ["f5f3ff", "ede9fe", "ddd6fe", "c4b5fd", "a78bfa", "8b5cf6", "7c3aed", "6d28d9", "5b21b6", "4c1d95", "2e1065"],
+            Purple: ["faf5ff", "f3e8ff", "e9d5ff", "d8b4fe", "c084fc", "a855f7", "9333ea", "7e22ce", "6b21a8", "581c87", "3b0764"],
+            Fuchsia: ["fdf4ff", "fae8ff", "f5d0fe", "f0abfc", "e879f9", "d946ef", "c026d3", "a21caf", "86198f", "701a75", "4a044e"],
+            Pink: ["fdf2f8", "fce7f3", "fbcfe8", "f9a8d4", "f472b6", "ec4899", "db2777", "be185d", "9d174d", "831843", "500724"],
+            Rose: ["fff1f2", "ffe4e6", "fecdd3", "fda4af", "fb7185", "f43f5e", "e11d48", "be123c", "9f1239", "881337", "4c0519"]
+        };
+
+        let currentMode = 'bg'; // 'bg' or 'primary'
+        let bgHex = '#f0f0f0';
+        let primaryHex = '#FACC15';
+
+        function init() {
+            const container = document.getElementById('palette-grid');
+            const labels = ["50", "100", "200", "300", "400", "500", "600", "700", "800", "900", "950"];
+
+            // Render Label Header
+            const headerRow = document.createElement('div');
+            headerRow.className = "flex gap-2 items-center mb-2";
+            headerRow.innerHTML = `<div class="w-20"></div>` + labels.map(l => `<div class="w-8 text-[10px] font-black text-center opacity-40 uppercase">${l}</div>`).join('');
+            container.appendChild(headerRow);
+
+            for (const [name, shades] of Object.entries(colors)) {
+                const row = document.createElement('div');
+                row.className = "flex gap-2 items-center group";
+
+                let html = `<div class="w-20 font-black uppercase text-xs opacity-60 group-hover:opacity-100 transition-opacity">${name}</div>`;
+                shades.forEach((hex, i) => {
+                    html += `<div class="color-swatch" style="background-color: #${hex}" onclick="pickColor('#${hex}')" title="${name}-${labels[i]}: #${hex}"></div>`;
+                });
+
+                row.innerHTML = html;
+                container.appendChild(row);
+            }
+            updateUI();
+        }
+
+        function setMode(m) {
+            currentMode = m;
+            document.getElementById('mode-bg').className = m === 'bg' ? 'px-3 py-1 bg-black text-white font-bold text-xs uppercase rounded' : 'px-3 py-1 bg-gray-200 font-bold text-xs uppercase rounded';
+            document.getElementById('mode-primary').className = m === 'primary' ? 'px-3 py-1 bg-black text-white font-bold text-xs uppercase rounded' : 'px-3 py-1 bg-gray-200 font-bold text-xs uppercase rounded';
+        }
+
+        function pickColor(hex) {
+            if (currentMode === 'bg') bgHex = hex;
+            else primaryHex = hex;
+            updateUI();
+        }
+
+        function updateUI() {
+            document.body.style.backgroundColor = bgHex;
+
+            // Update Primary Elements
+            const primaryEls = [document.getElementById('primary-circ'), document.getElementById('preview-btn-1'), document.getElementById('preview-progress')];
+            primaryEls.forEach(el => el.style.backgroundColor = primaryHex);
+
+            // Badge & Title decoration
+            document.querySelectorAll('.decoration-yellow-400').forEach(el => {
+                el.style.textDecorationColor = primaryHex;
+            });
+
+            // Update Code Output
+            document.getElementById('css-out').innerHTML = `/* Selected Palette Variables */<br>--bg-color: ${bgHex};<br>--primary-color: ${primaryHex};`;
+        }
+
+        function resetColors() {
+            bgHex = '#f0f0f0';
+            primaryHex = '#FACC15';
+            updateUI();
+        }
+
+        init();
+    </script>
+</body>
+
+</html>

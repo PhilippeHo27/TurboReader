@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TURBO READER // RSVP ENGINE</title>
+    <!-- Tailwind is now handled via Vite -->
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Lexend', sans-serif;
+            background-color: #fca5a5;
+        }
+
+        .neo-brutal {
+            border: 4px solid #000;
+            box-shadow: 6px 6px 0px #000;
+        }
+
+        .neo-btn {
+            border: 4px solid #000;
+            box-shadow: 6px 6px 0px #000;
+            transition: all 0.1s;
+            cursor: pointer;
+        }
+
+        .neo-btn:active {
+            box-shadow: 0px 0px 0px #000;
+            transform: translate(6px, 6px);
+        }
+
+        .reader-line::before,
+        .reader-line::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            height: 16px;
+            width: 4px;
+            background: #ef4444;
+            transform: translateX(-50%);
+        }
+
+        .reader-line::before {
+            top: 0;
+        }
+
+        .reader-line::after {
+            bottom: 0;
+        }
+
+        .word-span {
+            cursor: pointer;
+            padding: 2px 4px;
+            margin: 1px;
+            display: inline-block;
+        }
+
+        .word-span:hover {
+            background: #fef08a;
+            color: black;
+        }
+
+        .word-span.active {
+            background: #fef08a;
+            color: #000;
+            font-weight: 900;
+        }
+
+        #drop-zone.dragover {
+            background: #fef08a;
+            border-style: dashed;
+        }
+
+        /* Hide browser-default number input spinners */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+    </style>
+</head>
+
+<body class="text-black min-h-screen p-4 md:p-8">
+
+    <div class="max-w-[1600px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+        <!-- LEFT COLUMN: READER & MAIN CONTROLS (8 COLS) -->
+        <div class="lg:col-span-8 flex flex-col gap-8 min-h-0" id="left-column">
+
+            <!-- HEADER -->
+            <header class="flex flex-col md:flex-row items-center gap-4">
+                <h1 class="text-5xl md:text-7xl font-black uppercase tracking-tighter">Turbo Reader</h1>
+                <div class="flex flex-wrap gap-2">
+                    <p
+                        class="font-black bg-[#fef08a] text-black border-2 border-black px-2 py-1 transform -rotate-2 shadow-[2px_2px_0px_#000]">
+                        Rapid Serial Visual Presentation</p>
+                </div>
+            </header>
+
+            <!-- READER STAGE - NO SHADOW -->
+            <div id="drop-zone"
+                class="border-4 border-black bg-white p-8 md:p-24 relative h-64 md:h-80 flex items-center justify-center overflow-hidden transition-colors">
+                <!-- Center Markers -->
+                <div class="absolute top-0 bottom-0 left-1/2 w-0.5 bg-gray-100 -z-10 transform -translate-x-1/2"></div>
+                <div class="reader-line absolute top-0 w-full h-full pointer-events-none"></div>
+
+                <!-- THE WORD -->
+                <div id="word-display"
+                    class="text-6xl md:text-8xl font-bold whitespace-nowrap flex items-center w-full">
+                    <span id="word-left" class="flex-1 text-right">Drag</span>
+                    <span id="word-pivot" class="text-red-600 px-1 md:px-2">&</span>
+                    <span id="word-right" class="flex-1 text-left">Drop</span>
+                </div>
+
+                <div class="absolute bottom-4 right-4 font-black text-xs opacity-20 uppercase pointer-events-none">
+                    Drop text file here
+                </div>
+            </div>
+
+            <!-- PROGRESS BAR -->
+            <div class="neo-brutal bg-white p-2 w-full">
+                <div
+                    class="h-16 border-4 border-black bg-gray-100 relative overflow-hidden flex items-center justify-center">
+                    <div id="progress-bar"
+                        class="absolute left-0 top-0 h-full w-0 transition-all duration-75 progress-glow"></div>
+                    <span id="progress-text"
+                        class="relative z-10 font-black text-4xl italic tracking-tighter shadow-white drop-shadow-sm">0%</span>
+                </div>
+            </div>
+
+            <!-- CONSOLIDATED CONTROL BAR -->
+            <div class="flex flex-wrap items-stretch gap-4">
+                <!-- Playback Group -->
+                <div class="flex flex-1 min-w-[300px] gap-2">
+                    <button id="btn-reset" title="Reset to Start"
+                        class="neo-btn bg-[#d9f99d] text-black px-6 font-black hover:bg-[#ecfccb] flex items-center justify-center">
+                        <svg viewBox="0 0 24 24" class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="4"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 4v6h6" />
+                            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+                        </svg>
+                    </button>
+                    <button id="btn-prev" title="Previous Word"
+                        class="neo-btn bg-[#0ea5e9] text-black px-4 font-black hover:bg-[#38bdf8]">
+                        &#9664;&#9664;
+                    </button>
+                    <button id="btn-toggle"
+                        class="neo-btn bg-[#fef08a] text-black font-black flex-1 text-2xl py-4 hover:bg-[#fef9c3] uppercase">
+                        START
+                    </button>
+                    <button id="btn-next" title="Next Word"
+                        class="neo-btn bg-[#0ea5e9] text-black px-4 font-black hover:bg-[#38bdf8]">
+                        &#9654;&#9654;
+                    </button>
+                </div>
+
+                <!-- Tools Group -->
+                <div class="flex flex-1 gap-4">
+                    <button id="btn-clear"
+                        class="neo-btn bg-[#ef4444] text-[#020617] px-8 font-black uppercase hover:bg-[#f87171] text-2xl flex-1">
+                        CLEAR
+                    </button>
+
+                    <!-- WPM Control -->
+                    <div class="neo-brutal bg-[#fef08a] px-6 flex items-center justify-between gap-6 min-w-[280px]">
+                        <span class="font-black text-2xl uppercase">WPM</span>
+                        <div class="flex items-center gap-3">
+                            <button id="wpm-down"
+                                class="bg-white border-2 border-black w-10 h-10 font-black text-2xl hover:bg-black hover:text-white transition-colors">-</button>
+                            <input type="number" id="wpm-input" value="300" max="900"
+                                class="w-20 text-center font-black text-3xl outline-none bg-transparent">
+                            <button id="wpm-up"
+                                class="bg-white border-2 border-black w-10 h-10 font-black text-2xl hover:bg-black hover:text-white transition-colors">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEXT AREA & LOAD FILE (FOLDABLE) -->
+            <details class="neo-brutal bg-white overflow-hidden group">
+                <summary
+                    class="font-black text-lg p-4 cursor-pointer list-none flex justify-between items-center bg-[#fef08a] text-black hover:bg-[#fef9c3] transition-colors">
+                    <span>PASTE YOUR TEXT HERE</span>
+                    <span>↓</span>
+                </summary>
+                <div class="p-4 border-t-4 border-black bg-white flex flex-col gap-4">
+                    <textarea id="text-input"
+                        class="w-full h-48 border-4 border-black p-4 font-mono text-base outline-none bg-white text-black placeholder:text-gray-400"
+                        placeholder="Paste your massive wall of text here..."></textarea>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <button id="btn-load-input"
+                            class="neo-btn bg-[#fef08a] text-black py-4 font-black text-xl hover:bg-[#fef9c3]">
+                            LOAD THIS TEXT
+                        </button>
+                        <button id="btn-trigger-file"
+                            class="neo-btn bg-[#fef08a] text-black py-4 font-black text-xl hover:bg-[#fef9c3]">
+                            LOAD FILE
+                        </button>
+                    </div>
+                    <input type="file" id="file-picker" class="hidden" accept=".txt,.md">
+                </div>
+            </details>
+        </div>
+
+        <!-- RIGHT COLUMN: FULL TEXT VISUALIZER (4 COLS) - HIDDEN ON MOBILE -->
+        <div class="hidden lg:flex lg:col-span-4 flex-col gap-4 min-h-0">
+            <div id="visualizer-container" class="border-4 border-black bg-white flex flex-col overflow-hidden">
+                <div
+                    class="bg-[#fef08a] text-black p-4 font-black text-xl uppercase tracking-widest shrink-0 border-b-4 border-black">
+                    Visualizer
+                </div>
+                <div id="visualizer"
+                    class="p-4 overflow-y-auto font-mono leading-relaxed text-sm bg-gray-50 border-t-4 border-black h-full min-h-0">
+                    <p class="text-[#fef08a] italic opacity-50">Load some text to see the interactive visualizer...</p>
+                </div>
+                <div
+                    class="p-2 bg-[#fef08a] text-black text-xs uppercase font-black text-center shrink-0 border-t-4 border-black">
+                    Click any word to jump
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="mt-12 text-center opacity-0 hover:opacity-100 transition-opacity">
+        <div class="inline-block px-4 py-2 font-mono text-xs font-bold uppercase">
+            TURBO READER // ANTIGRAVITY
+        </div>
+    </footer>
+
+    <script type="module" src="/src/main.js"></script>
+</body>
+
+</html>

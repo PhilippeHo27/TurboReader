@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neo-Brutalist Design System & Color Lab</title>
+
+    <!-- Dependencies -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;500;700&family=Inter:wght@400;700;900&family=Lexend:wght@400;700;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="style.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brutal: {
+                            black: '#0a0a0a',
+                            yellow: 'var(--brutal-yellow)',
+                            red: '#ef4444',
+                            green: '#22c55e',
+                            blue: '#3b82f6',
+                            gray: '#e5e5e5',
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="p-0 m-0 min-h-screen">
+
+    <!-- TOP NAVIGATION -->
+    <nav class="sticky top-0 z-50 sticky-nav px-8 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div class="flex items-center gap-6">
+            <h1 class="text-3xl font-black tracking-tighter">Neo Brutalist Library</h1>
+            <div class="hidden lg:flex gap-6 font-bold uppercase text-xs">
+                <a href="#color-lab" class="hover:underline">Color Lab</a>
+                <a href="#library-section" class="hover:underline">Component Library</a>
+                <a href="#motion-section" class="hover:underline">Motion</a>
+            </div>
+        </div>
+        <div class="flex gap-4"></div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto p-4 md:p-8 space-y-24">
+
+        <!-- COLOR LAB & LIVE REVIEWS -->
+        <section id="color-lab" class="component-section">
+            <div class="flex flex-col lg:flex-row gap-12 items-start">
+
+                <!-- LEFT: COLOR LAB -->
+                <div class="flex-grow space-y-8">
+                    <div
+                        class="flex flex-col md:flex-row justify-between items-center border-b-8 border-black pb-4 mb-8 gap-4">
+                        <div class="flex items-center gap-4">
+                            <h2 class="text-5xl font-black">Color Lab</h2>
+                            <button onclick="resetColors()"
+                                class="border-4 border-black bg-white w-10 h-10 flex items-center justify-center hover:bg-black hover:text-white transition-all shadow-[4px_4px_0_rgba(0,0,0,1)] active:shadow-none active:translate-x-[4px] active:translate-y-[4px]"
+                                title="Reset Colors">
+                                <i class="fas fa-rotate-right"></i>
+                            </button>
+                        </div>
+                        <div class="flex">
+                            <div
+                                class="flex bg-gray-100 p-1 border-4 border-black font-black uppercase text-[12px] h-[52px]">
+                                <button onclick="setMode('bg')" id="mode-bg"
+                                    class="w-20 flex items-center justify-center bg-black text-white transition-all">BG</button>
+                                <button onclick="setMode('btn-bg')" id="mode-btn-bg"
+                                    class="w-28 flex items-center justify-center hover:bg-black hover:text-white transition-all space-x-2">
+                                    <span class="text-xl leading-none font-normal">&#x25A1;</span>
+                                    <span>BG</span>
+                                </button>
+                                <button onclick="setMode('btn-text')" id="mode-btn-text"
+                                    class="w-20 flex items-center justify-center hover:bg-black hover:text-white transition-all">Text</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <div class="min-w-[700px]">
+                            <div id="palette-grid" class="space-y-2"></div>
+                        </div>
+                    </div>
+
+                    <div id="color-tooltip">#000000</div>
+                </div>
+
+                <!-- RIGHT: LIVE LAB PREVIEWS -->
+                <div class="w-full lg:w-80 shrink-0 pt-12 space-y-12">
+                    <div class="space-y-4">
+                        <p class="font-black uppercase text-[10px] opacity-40 italic">Live Button</p>
+                        <div id="btn-custom-preview"></div>
+                    </div>
+                    <div class="space-y-4">
+                        <p class="font-black uppercase text-[10px] opacity-40 italic">Live Card</p>
+                        <div id="card-custom-preview"></div>
+                    </div>
+                    <div class="space-y-4">
+                        <p class="font-black uppercase text-[10px] opacity-40 italic">Live Tooltip</p>
+                        <div id="tooltip-custom-preview"></div>
+                    </div>
+                    <div class="flex gap-6 items-end">
+                        <div class="space-y-4">
+                            <p class="font-black uppercase text-[10px] opacity-40 italic">Live Avatar</p>
+                            <div id="avatar-custom-preview"></div>
+                        </div>
+                        <div class="space-y-4">
+                            <p class="font-black uppercase text-[10px] opacity-40 italic">Live Badge</p>
+                            <div id="badge-custom-preview"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- COMPONENT LIBRARY -->
+        <section id="library-section" class="space-y-12">
+            <h2 class="text-4xl font-black text-center uppercase tracking-tight">Component Library</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="neo-brutalist bg-white overflow-hidden flex flex-col no-anim lib-container">
+                    <div class="border-b-4 border-black p-4 font-black uppercase tracking-widest text-sm text-black">
+                        Button</div>
+                    <div class="flex-grow p-12 flex items-center justify-center" id="lib-button"></div>
+                </div>
+                <div class="neo-brutalist bg-white overflow-hidden flex flex-col no-anim lib-container">
+                    <div class="border-b-4 border-black p-4 font-black uppercase tracking-widest text-sm text-black">
+                        Card</div>
+                    <div class="flex-grow p-8 flex items-center justify-center" id="lib-card"></div>
+                </div>
+                <div class="neo-brutalist bg-white overflow-hidden flex flex-col no-anim lib-container">
+                    <div class="border-b-4 border-black p-4 font-black uppercase tracking-widest text-sm text-black">
+                        Input</div>
+                    <div class="flex-grow p-12 flex items-center justify-center" id="lib-input"></div>
+                </div>
+                <div class="neo-brutalist bg-white overflow-hidden flex flex-col no-anim lib-container">
+                    <div class="border-b-4 border-black p-4 font-black uppercase tracking-widest text-sm text-black">
+                        Toggle</div>
+                    <div class="flex-grow p-12 flex items-center justify-center" id="lib-toggle"></div>
+                </div>
+                <div class="neo-brutalist bg-white overflow-visible-important flex flex-col no-anim lib-container">
+                    <div class="border-b-4 border-black p-4 font-black uppercase tracking-widest text-sm text-black">
+                        Alert</div>
+                    <div class="flex-grow p-12 flex items-center justify-center" id="lib-alert"></div>
+                </div>
+                <div class="neo-brutalist bg-white overflow-hidden flex flex-col no-anim lib-container">
+                    <div class="border-b-4 border-black p-4 font-black uppercase tracking-widest text-sm text-black">
+                        Modal</div>
+                    <div class="flex-grow p-12 flex items-center justify-center" id="lib-modal"></div>
+                </div>
+                <div class="neo-brutalist bg-white overflow-hidden flex flex-col no-anim lib-container">
+                    <div class="border-b-4 border-black p-4 font-black uppercase tracking-widest text-sm text-black">Nav
+                    </div>
+                    <div class="flex-grow p-12 flex items-center justify-center" id="lib-nav"></div>
+                </div>
+                <div class="neo-brutalist bg-white overflow-hidden flex flex-col no-anim lib-container">
+                    <div class="border-b-4 border-black p-4 font-black uppercase tracking-widest text-sm text-black">
+                        Progress</div>
+                    <div class="flex-grow p-12 flex items-center justify-center w-full" id="lib-progress"></div>
+                </div>
+                <div class="neo-brutalist bg-white overflow-visible-important flex flex-col no-anim lib-container">
+                    <div class="border-b-4 border-black p-4 font-black uppercase tracking-widest text-sm text-black">
+                        Dropdown</div>
+                    <div class="flex-grow p-12 flex items-start justify-center pt-16" id="lib-dropdown"></div>
+                </div>
+                <div class="neo-brutalist bg-white overflow-hidden flex flex-col no-anim lib-container">
+                    <div class="border-b-4 border-black p-4 font-black uppercase tracking-widest text-sm text-black">
+                        Accordion</div>
+                    <div class="flex-grow p-8 flex items-center justify-center" id="lib-accordion"></div>
+                </div>
+                <div class="neo-brutalist bg-white overflow-visible-important flex flex-col no-anim lib-container">
+                    <div class="border-b-4 border-black p-4 font-black uppercase tracking-widest text-sm text-black">
+                        Tooltip</div>
+                    <div class="flex-grow p-12 flex items-center justify-center" id="lib-tooltip"></div>
+                </div>
+                <div class="neo-brutalist bg-white overflow-hidden flex flex-col no-anim lib-container">
+                    <div class="border-b-4 border-black p-4 font-black uppercase tracking-widest text-sm text-black">
+                        Avatar</div>
+                    <div class="flex-grow p-12 flex items-center justify-center" id="lib-avatar"></div>
+                </div>
+                <div class="neo-brutalist bg-white overflow-hidden flex flex-col no-anim lib-container">
+                    <div class="border-b-4 border-black p-4 font-black uppercase tracking-widest text-sm text-black">
+                        Badge</div>
+                    <div class="flex-grow p-12 flex items-center justify-center" id="lib-badge"></div>
+                </div>
+                <div class="neo-brutalist bg-white overflow-hidden flex flex-col no-anim lib-container">
+                    <div class="border-b-4 border-black p-4 font-black uppercase tracking-widest text-sm text-black">
+                        Tabs</div>
+                    <div class="flex-grow p-8 flex items-center justify-center" id="lib-tabs"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MOTION EXPLORER -->
+        <section id="motion-section" class="component-section space-y-12 flex flex-col items-center">
+            <h2 class="text-4xl font-black text-center uppercase tracking-tight">Motion Explorer</h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 w-full max-w-4xl mx-auto">
+                <div class="neo-brutalist bg-[#38bdf8] p-8 text-center animate-pulse-brutal">
+                    <span class="font-black uppercase text-white">Pulse</span>
+                </div>
+                <div class="neo-brutalist bg-black text-white p-8 text-center animate-shake-brutal cursor-pointer">
+                    <span class="font-black uppercase italic">Shake Me</span>
+                </div>
+                <div class="neo-brutalist bg-brutal-green p-8 text-center animate-pop-brutal cursor-pointer">
+                    <span class="font-black uppercase">Pop In</span>
+                </div>
+                <div class="neo-brutalist bg-[#f87171] p-8 text-center group overflow-hidden relative cursor-help">
+                    <span class="font-black uppercase group-hover-glitch inline-block text-white">Glitch</span>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Modals mount point -->
+    <div id="modal-mount"></div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    background-color: #fca5a5;
+    overflow-x: hidden;
+}
+
+@layer components {
+    .neo-brutal {
+        @apply border-4 border-black shadow-[6px_6px_0px_#000];
+    }
+
+    .neo-btn {
+        @apply border-4 border-black shadow-[6px_6px_0px_#000] transition-all duration-100 cursor-pointer select-none active:translate-x-[6px] active:translate-y-[6px] active:shadow-none;
+    }
+}
+
+/* Custom Scrollbar for Visualizer */
+#visualizer::-webkit-scrollbar {
+    width: 14px;
+}
+
+#visualizer::-webkit-scrollbar-track {
+    background: #f3f4f6;
+    border-left: 4px solid #000;
+}
+
+#visualizer::-webkit-scrollbar-thumb {
+    background: #000;
+    border: 3px solid #fff;
+}
+
+#visualizer::-webkit-scrollbar-thumb:hover {
+    background: #fef08a;
+}
+
+/* Progress Bar - Static Orange or Subtle Pulse */
+.progress-glow {
+    background-color: #22d3ee;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+}
