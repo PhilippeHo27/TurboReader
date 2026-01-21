@@ -2,7 +2,7 @@
 
 A high-performance **Rapid Serial Visual Presentation (RSVP)** reader designed for speed and efficiency. Built with a bold **Neo-Brutalist** aesthetic.
 
-![Turbo Reader Preview](https://github.com/PhilippeHo27/TurboReader/raw/main/preview.png) *(Add your preview image later)*
+![Turbo Reader Preview](preview.png)
 
 ## 🚀 Features
 
