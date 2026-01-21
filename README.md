@@ -1,4 +1,6 @@
-# Turbo Reader // RSVP Engine
+# Turbo Reader
+
+[Try it here!](https://philippeho27.github.io/TurboReader/)
 
 A high-performance **Rapid Serial Visual Presentation (RSVP)** reader designed for speed and efficiency. Built with a bold **Neo-Brutalist** aesthetic.
 
@@ -35,6 +37,6 @@ A high-performance **Rapid Serial Visual Presentation (RSVP)** reader designed f
    npm run dev
    ```
 
-## 📜 License
+---
 
-Created by **Antigravity**. Use it to read faster, learn more, and seize the means of information.
+*Entirely vibe-coded with Google Antigravity using Gemini 3.0 Flash.*

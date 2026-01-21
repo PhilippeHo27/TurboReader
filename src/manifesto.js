@@ -1,6 +1,6 @@
 export const manifestoText = `# Manifesto of the Communist Party
 
-## Introduction
+Introduction
 
 A spectre is haunting Europe — the spectre of communism. All the powers of old Europe have entered into a holy alliance to exorcise this spectre: Pope and Tsar, Metternich and Guizot, French Radicals and German police-spies.
 
@@ -14,7 +14,7 @@ II. It is high time that Communists should openly, in the face of the whole worl
 
 To this end, Communists of various nationalities have assembled in London and sketched the following manifesto, to be published in the English, French, German, Italian, Flemish and Danish languages.
 
-## I. Bourgeois and Proletarians
+I. Bourgeois and Proletarians
 
 The history of all hitherto existing society is the history of class struggles.
 
@@ -125,7 +125,7 @@ Hitherto, every form of society has been based, as we have already seen, on the 
 The essential conditions for the existence and for the sway of the bourgeois class is the formation and augmentation of capital; the condition for capital is wage labor. Wage labor rests exclusively on competition between the laborers. The advance of industry, whose involuntary promoter is the bourgeoisie, replaces the isolation of the laborers, due to competition, by the revolutionary combination, due to association. The development of Modern Industry, therefore, cuts from under its feet the very foundation on which the bourgeoisie produces and appropriates products. What the bourgeoisie therefore produces, above all, are its own grave-diggers. Its fall and the victory of the proletariat are equally inevitable.
 
 
-## II. Proletarians and Communists
+II. Proletarians and Communists
 
 In what relation do the Communists stand to the proletarians as a whole? The Communists do not form a separate party opposed to the other working-class parties.
 
@@ -297,11 +297,11 @@ When, in the course of development, class distinctions have disappeared, and all
 
 In place of the old bourgeois society, with its classes and class antagonisms, we shall have an association in which the free development of each is the condition for the free development of all.
 
-## Socialist and Communist Literature
+Socialist and Communist Literature
 
-### 1. Reactionary Socialism
+1. Reactionary Socialism
 
-#### A. Feudal Socialism
+A. Feudal Socialism
 
 Owing to their historical position, it became the vocation of the aristocracies of France and England to write pamphlets against modern bourgeois society. In the French Revolution of July 1830, and in the English reform agitation, these aristocracies again succumbed to the hateful upstart. Thenceforth, a serious political struggle was altogether out of the question. A literary battle alone remained possible. But even in the domain of literature, the old cries of the restoration period had become impossible.
 
@@ -325,7 +325,7 @@ As the parson has ever gone hand in hand with the landlord, so has clerical soci
 
 Nothing is easier than to give Christian asceticism a socialist tinge. Has not Christianity declaimed against private property, against marriage, against the state? Has it not preached in the place of these, charity and poverty, celibacy and mortification of the flesh, monastic life and Mother Church? Christian socialism is but the holy water with which the priest consecrates the heart-burnings of the aristocrat.
 
-#### B. Petty-Bourgeois Socialism
+B. Petty-Bourgeois Socialism
 
 The feudal aristocracy was not the only class that was ruined by the bourgeoisie, not the only class whose conditions of existence pined and perished in the atmosphere of modern bourgeois society. The medieval burgesses and the small peasant proprietors were the precursors of the modern bourgeoisie. In those countries which are but little developed, industrially and commercially, these two classes still vegetate side by side with the rising bourgeoisie.
 
@@ -341,7 +341,7 @@ Its last words are: corporate guilds for manufacture; patriarchal relations in a
 
 Ultimately, when stubborn historical facts had dispersed all intoxicating effects of self- deception, this form of socialism ended in a miserable hangover.
 
-#### C. German or "True" Socialism
+C. German or "True" Socialism
 
 The socialist and communist literature of France, a literature that originated under the pressure of a bourgeoisie in power, and that was the expressions of the struggle against this power, was introduced into Germany at a time when the bourgeoisie in that country had just begun its contest with feudal absolutism.
 
@@ -377,7 +377,7 @@ It proclaimed the German nation to be the model nation, and the German petty phi
 
 The revolutionary storm of 1848 swept away this whole shabby tendency and cured its protagonists of the desire to dabble in socialism. 
 
-### 2. Conservative or Bourgeois Socialism
+2. Conservative or Bourgeois Socialism
 
 A part of the bourgeoisie is desirous of redressing social grievances in order to secure the continued existence of bourgeois society.
 
@@ -395,7 +395,7 @@ Free trade: for the benefit of the working class. Protective duties: for the ben
 
 It is summed up in the phrase: the bourgeois is a bourgeois -- for the benefit of the working class.
 
-### 3. Critical-Utopian Socialism and Communism
+3. Critical-Utopian Socialism and Communism
 
 We do not here refer to that literature which, in every great modern revolution, has always given voice to the demands of the proletariat, such as the writings of Babeuf and others.
 
@@ -427,7 +427,7 @@ They, therefore, violently oppose all political action on the part of the workin
 
 The Owenites in England, and the Fourierists in France, respectively, oppose the Chartists and the Réformistes.
 
-## Position of the Communists in Relation to the Various Existing Opposition Parties
+Position of the Communists in Relation to the Various Existing Opposition Parties
 
 Section II has made clear the relations of the Communists to the existing working-class parties, such as the Chartists in England and the Agrarian Reformers in America.
 
