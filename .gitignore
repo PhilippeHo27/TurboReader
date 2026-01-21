@@ -99,3 +99,6 @@ typings/
 
 # Vite build
 dist
+
+# AI Notes & Vibe Coding Secrets
+.ai_notes/

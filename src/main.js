@@ -1,4 +1,5 @@
 import './style.css';
+import { manifestoText } from './manifesto.js';
 
 class TurboEngine {
     constructor() {
@@ -67,8 +68,8 @@ class TurboEngine {
         // Initialize Responsive Visualizer (Height Sync)
         this.initVisualizerSync();
 
-        // Initialize with default state
-        this.loadText("Welcome to Turbo Reader. Load text to begin. Paste below or drop a text file.");
+        // Initialize with default state (The Communist Manifesto)
+        this.loadText(manifestoText);
     }
 
     initVisualizerSync() {
@@ -255,14 +256,16 @@ class TurboEngine {
 
             const visRect = this.elVisualizer.getBoundingClientRect();
             const wordOffsetTop = current.offsetTop;
+            const wordHeight = current.offsetHeight;
             const visScrollTop = this.elVisualizer.scrollTop;
-            const threshold = visRect.height * 0.85;
+            const visHeight = visRect.height;
 
-            if ((wordOffsetTop - visScrollTop) > threshold) {
-                this.elVisualizer.scrollTo({ top: wordOffsetTop, behavior: 'auto' });
-            }
-            else if (wordOffsetTop < visScrollTop) {
-                this.elVisualizer.scrollTo({ top: wordOffsetTop, behavior: 'auto' });
+            const relativeTop = wordOffsetTop - visScrollTop;
+
+            // Trigger a centering scroll if the word is past 80% depth or above the viewport
+            if (relativeTop > visHeight * 0.8 || relativeTop < 0) {
+                const targetScroll = wordOffsetTop - (visHeight / 2) + (wordHeight / 2);
+                this.elVisualizer.scrollTo({ top: targetScroll, behavior: 'smooth' });
             }
         }
     }
