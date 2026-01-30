@@ -10,7 +10,7 @@
     <style>
         body {
             font-family: 'Lexend', sans-serif;
-            background-color: #fca5a5;
+            background-color: #6ee7b7;
         }
 
         .neo-brutal {
@@ -30,24 +30,7 @@
             transform: translate(6px, 6px);
         }
 
-        .reader-line::before,
-        .reader-line::after {
-            content: '';
-            position: absolute;
-            left: 50%;
-            height: 16px;
-            width: 4px;
-            background: #ef4444;
-            transform: translateX(-50%);
-        }
 
-        .reader-line::before {
-            top: 0;
-        }
-
-        .reader-line::after {
-            bottom: 0;
-        }
 
         .word-span {
             cursor: pointer;
@@ -57,18 +40,18 @@
         }
 
         .word-span:hover {
-            background: #fef08a;
+            background: #fde047;
             color: black;
         }
 
         .word-span.active {
-            background: #fef08a;
+            background: #fde047;
             color: #000;
             font-weight: 900;
         }
 
         #drop-zone.dragover {
-            background: #fef08a;
+            background: #fde047;
             border-style: dashed;
         }
 
@@ -83,6 +66,26 @@
         input[type=number] {
             -moz-appearance: textfield;
             appearance: textfield;
+        }
+
+        .wpm-control {
+            user-select: none;
+            cursor: ns-resize;
+        }
+
+        .wpm-btn {
+            height: 24px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid transparent;
+            transition: all 0.1s;
+        }
+
+        .wpm-btn:hover {
+            background: #000;
+            color: #fff;
         }
     </style>
 </head>
@@ -99,7 +102,7 @@
                 <h1 class="text-5xl md:text-7xl font-black uppercase tracking-tighter">Turbo Reader</h1>
                 <div class="flex flex-wrap gap-2">
                     <p
-                        class="font-black bg-[#fef08a] text-black border-2 border-black px-2 py-1 transform -rotate-2 shadow-[2px_2px_0px_#000]">
+                        class="font-black bg-[#fde047] text-black border-2 border-black px-2 py-1 transform -rotate-2 shadow-[2px_2px_0px_#000]">
                         Rapid Serial Visual Presentation</p>
                 </div>
             </header>
@@ -109,7 +112,7 @@
                 class="border-4 border-black bg-white p-8 md:p-24 relative h-64 md:h-80 flex items-center justify-center overflow-hidden transition-colors">
                 <!-- Center Markers -->
                 <div class="absolute top-0 bottom-0 left-1/2 w-0.5 bg-gray-100 -z-10 transform -translate-x-1/2"></div>
-                <div class="reader-line absolute top-0 w-full h-full pointer-events-none"></div>
+
 
                 <!-- THE WORD -->
                 <div id="word-display"
@@ -136,11 +139,11 @@
             </div>
 
             <!-- CONSOLIDATED CONTROL BAR -->
-            <div class="flex flex-wrap items-stretch gap-4">
+            <div class="flex flex-wrap items-stretch gap-4 w-full">
                 <!-- Playback Group -->
                 <div class="flex flex-1 min-w-[300px] gap-2">
                     <button id="btn-reset" title="Reset to Start"
-                        class="neo-btn bg-[#d9f99d] text-black px-6 font-black hover:bg-[#ecfccb] flex items-center justify-center">
+                        class="neo-btn bg-[#fde047] text-black px-6 font-black hover:bg-[#fde047]/90 flex items-center justify-center">
                         <svg viewBox="0 0 24 24" class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="4"
                             stroke-linecap="round" stroke-linejoin="round">
                             <path d="M1 4v6h6" />
@@ -148,36 +151,45 @@
                         </svg>
                     </button>
                     <button id="btn-prev" title="Previous Word"
-                        class="neo-btn bg-[#0ea5e9] text-black px-4 font-black hover:bg-[#38bdf8]">
+                        class="neo-btn bg-[#fde047] text-black px-4 font-black hover:bg-[#fde047]/90">
                         &#9664;&#9664;
                     </button>
                     <button id="btn-toggle"
-                        class="neo-btn bg-[#fef08a] text-black font-black flex-1 text-2xl py-4 hover:bg-[#fef9c3] uppercase">
+                        class="neo-btn bg-[#fde047] text-black font-black flex-1 text-2xl py-4 hover:bg-[#fde047]/90 uppercase">
                         START
                     </button>
                     <button id="btn-next" title="Next Word"
-                        class="neo-btn bg-[#0ea5e9] text-black px-4 font-black hover:bg-[#38bdf8]">
+                        class="neo-btn bg-[#fde047] text-black px-4 font-black hover:bg-[#fde047]/90">
                         &#9654;&#9654;
                     </button>
                 </div>
 
                 <!-- Tools Group -->
-                <div class="flex flex-1 gap-4">
+                <div class="flex flex-wrap flex-1 gap-4 min-w-[300px]">
                     <button id="btn-clear"
-                        class="neo-btn bg-[#ef4444] text-[#020617] px-8 font-black uppercase hover:bg-[#f87171] text-2xl flex-1">
+                        class="neo-btn bg-[#fde047] text-[#020617] px-8 font-black uppercase hover:bg-[#fde047]/90 text-2xl flex-1 min-w-[140px]">
                         CLEAR
                     </button>
 
                     <!-- WPM Control -->
-                    <div class="neo-brutal bg-[#fef08a] px-6 flex items-center justify-between gap-6 min-w-[280px]">
-                        <span class="font-black text-2xl uppercase">WPM</span>
-                        <div class="flex items-center gap-3">
-                            <button id="wpm-down"
-                                class="bg-white border-2 border-black w-10 h-10 font-black text-2xl hover:bg-black hover:text-white transition-colors">-</button>
+                    <div id="wpm-scroller"
+                        class="neo-brutal bg-[#fde047] px-4 flex items-center justify-center gap-4 flex-1 min-w-[140px] wpm-control">
+                        <span class="font-black text-xl uppercase hidden sm:inline">WPM</span>
+                        <div class="flex flex-col items-center">
+                            <button id="wpm-up" title="Speed Up" class="wpm-btn">
+                                <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor"
+                                    stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="18 15 12 9 6 15"></polyline>
+                                </svg>
+                            </button>
                             <input type="number" id="wpm-input" value="300" max="900"
-                                class="w-20 text-center font-black text-3xl outline-none bg-transparent">
-                            <button id="wpm-up"
-                                class="bg-white border-2 border-black w-10 h-10 font-black text-2xl hover:bg-black hover:text-white transition-colors">+</button>
+                                class="w-16 text-center font-black text-2xl outline-none bg-transparent pointer-events-none">
+                            <button id="wpm-down" title="Slow Down" class="wpm-btn">
+                                <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor"
+                                    stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -186,7 +198,7 @@
             <!-- TEXT AREA & LOAD FILE (FOLDABLE) -->
             <details class="neo-brutal bg-white overflow-hidden group">
                 <summary
-                    class="font-black text-lg p-4 cursor-pointer list-none flex justify-between items-center bg-[#fef08a] text-black hover:bg-[#fef9c3] transition-colors">
+                    class="font-black text-lg p-4 cursor-pointer list-none flex justify-between items-center bg-[#fde047] text-black hover:bg-[#fde047]/90 transition-colors">
                     <span>INSERT YOUR TEXT HERE</span>
                     <span>↓</span>
                 </summary>
@@ -197,11 +209,11 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <button id="btn-load-input"
-                            class="neo-btn bg-[#fef08a] text-black py-4 font-black text-xl hover:bg-[#fef9c3]">
+                            class="neo-btn bg-[#fde047] text-black py-4 font-black text-xl hover:bg-[#fde047]/90">
                             LOAD THIS TEXT
                         </button>
                         <button id="btn-trigger-file"
-                            class="neo-btn bg-[#fef08a] text-black py-4 font-black text-xl hover:bg-[#fef9c3]">
+                            class="neo-btn bg-[#fde047] text-black py-4 font-black text-xl hover:bg-[#fde047]/90">
                             LOAD FILE
                         </button>
                     </div>
@@ -214,15 +226,15 @@
         <div class="hidden lg:flex lg:col-span-4 flex-col gap-4 min-h-0">
             <div id="visualizer-container" class="border-4 border-black bg-white flex flex-col overflow-hidden">
                 <div
-                    class="bg-[#fef08a] text-black p-4 font-black text-xl uppercase tracking-widest shrink-0 border-b-4 border-black">
+                    class="bg-[#fde047] text-black p-4 font-black text-xl uppercase tracking-widest shrink-0 border-b-4 border-black">
                     Visualizer
                 </div>
                 <div id="visualizer"
                     class="p-4 overflow-y-auto font-mono leading-relaxed text-sm bg-gray-50 border-t-4 border-black h-full min-h-0">
-                    <p class="text-[#fef08a] italic opacity-50">Load some text to see the interactive visualizer...</p>
+                    <p class="text-[#fde047] italic opacity-50">Load some text to see the interactive visualizer...</p>
                 </div>
                 <div
-                    class="p-2 bg-[#fef08a] text-black text-xs uppercase font-black text-center shrink-0 border-t-4 border-black">
+                    class="p-2 bg-[#fde047] text-black text-xs uppercase font-black text-center shrink-0 border-t-4 border-black">
                     Click any word to jump
                 </div>
             </div>

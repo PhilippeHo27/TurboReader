@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-    background-color: #fca5a5;
+    background-color: #6ee7b7;
     overflow-x: hidden;
 }
 
@@ -33,11 +33,11 @@ body {
 }
 
 #visualizer::-webkit-scrollbar-thumb:hover {
-    background: #fef08a;
+    background: #fde047;
 }
 
 /* Progress Bar - Static Orange or Subtle Pulse */
 .progress-glow {
-    background-color: #22d3ee;
+    background-color: #fde047;
     box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
 }

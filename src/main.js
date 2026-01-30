@@ -23,14 +23,48 @@ class TurboEngine {
         this.elDropZone = document.getElementById('drop-zone');
         this.elLeftColumn = document.getElementById('left-column');
         this.elFilePicker = document.getElementById('file-picker');
+        this.elWpmScroller = document.getElementById('wpm-scroller');
 
         this.init();
     }
 
     init() {
         // UI Controls
-        document.getElementById('wpm-up').addEventListener('click', () => this.changeSpeed(50));
-        document.getElementById('wpm-down').addEventListener('click', () => this.changeSpeed(-50));
+        document.getElementById('wpm-up').addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.changeSpeed(50);
+        });
+        document.getElementById('wpm-down').addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.changeSpeed(-50);
+        });
+
+        // Mouse Scroll for WPM
+        this.elWpmScroller.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const delta = e.deltaY > 0 ? -50 : 50;
+            this.changeSpeed(delta);
+        }, { passive: false });
+
+        // Touch Swipe for WPM
+        let touchStartY = 0;
+        this.elWpmScroller.addEventListener('touchstart', (e) => {
+            touchStartY = e.touches[0].clientY;
+        }, { passive: true });
+
+        this.elWpmScroller.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            const currentY = e.touches[0].clientY;
+            const diff = touchStartY - currentY;
+
+            // Sensitivity threshold
+            if (Math.abs(diff) > 20) {
+                const delta = diff > 0 ? 50 : -50;
+                this.changeSpeed(delta);
+                touchStartY = currentY; // Reset for continuous sliding
+            }
+        }, { passive: false });
+
         this.elWpmInput.addEventListener('change', (e) => this.setSpeed(parseInt(e.target.value)));
 
         this.elToggleBtn.addEventListener('click', () => this.togglePlay());
@@ -172,7 +206,7 @@ class TurboEngine {
 
         this.isPlaying = true;
         this.elToggleBtn.textContent = "PAUSE";
-        this.elToggleBtn.classList.replace('bg-[#fef08a]', 'bg-[#ef4444]');
+        this.elToggleBtn.classList.replace('bg-[#fde047]', 'bg-[#fde047]');
         this.elToggleBtn.classList.replace('text-black', 'text-black'); // Red background, Black text
 
         const intervalMs = 60000 / this.wpm;
@@ -182,7 +216,7 @@ class TurboEngine {
     stop() {
         this.isPlaying = false;
         this.elToggleBtn.textContent = "START";
-        this.elToggleBtn.classList.replace('bg-[#ef4444]', 'bg-[#fef08a]');
+        this.elToggleBtn.classList.replace('bg-[#fde047]', 'bg-[#fde047]');
         this.elToggleBtn.classList.replace('text-black', 'text-black');
         clearInterval(this.intervalId);
     }
@@ -200,11 +234,11 @@ class TurboEngine {
 
         // Update color based on segments
         if (percent <= 33) {
-            this.elProgressBar.style.backgroundColor = '#ef4444';
+            this.elProgressBar.style.backgroundColor = '#fde047';
         } else if (percent <= 66) {
-            this.elProgressBar.style.backgroundColor = '#06b6d3';
+            this.elProgressBar.style.backgroundColor = '#fde047';
         } else {
-            this.elProgressBar.style.backgroundColor = '#a3e635';
+            this.elProgressBar.style.backgroundColor = '#fde047';
         }
     }
 
@@ -288,7 +322,7 @@ class TurboEngine {
         this.currentIndex = 0;
         this.elTextInput.value = '';
         this.elFilePicker.value = '';
-        this.elVisualizer.innerHTML = '<p class="text-[#fef08a] italic opacity-50">Load some text to see the interactive visualizer...</p>';
+        this.elVisualizer.innerHTML = '<p class="text-[#fde047] italic opacity-50">Load some text to see the interactive visualizer...</p>';
         this.elLeft.textContent = 'Ready';
         this.elPivot.textContent = '?';
         this.elRight.textContent = '';
