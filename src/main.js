@@ -167,7 +167,45 @@ class TurboEngine {
         this.elPivot.textContent = pivotChar;
         this.elRight.textContent = rightPart;
 
+        this.adjustFontSize(word);
         this.updateVisualizerHighlight();
+    }
+
+    adjustFontSize(word) {
+        const wordDisplay = document.getElementById('word-display');
+        if (!wordDisplay) return;
+
+        const isMobile = window.innerWidth < 768;
+        const len = word.length;
+
+        // Base font sizes (matching Tailwind's text-6xl and text-8xl)
+        // 6xl = 3.75rem, 8xl = 6rem
+        const baseSize = isMobile ? 3.75 : 6;
+
+        // Character thresholds before we start shrinking
+        const threshold = isMobile ? 8 : 14;
+
+        if (len > threshold) {
+            // Calculate a scale factor based on how much the word exceeds the threshold
+            // We use a slightly more conservative scaling to ensure it fits
+            const scaleFactor = threshold / len;
+            const newSize = Math.max(baseSize * scaleFactor, isMobile ? 1.5 : 2.5);
+            wordDisplay.style.fontSize = `${newSize}rem`;
+
+            // For super long words, ensure they can wrap as a last resort
+            if (len > 20) {
+                wordDisplay.classList.remove('whitespace-nowrap');
+                wordDisplay.classList.add('break-all');
+            } else {
+                wordDisplay.classList.add('whitespace-nowrap');
+                wordDisplay.classList.remove('break-all');
+            }
+        } else {
+            // Reset to default
+            wordDisplay.style.fontSize = '';
+            wordDisplay.classList.add('whitespace-nowrap');
+            wordDisplay.classList.remove('break-all');
+        }
     }
 
     tick() {
